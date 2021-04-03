@@ -9,7 +9,37 @@ class Car {
   #isStarted = false
   #mileage = 0;
 
-  constructor() { }
+  constructor(brand = 'BMV', model = 'X4', yearOfManufacturing = 2020, maxSpeed = 240, maxFuelVolume = 20, fuelConsumption = 12) {
+    if (typeof brand !== 'string' || brand.length < 1 || brand.length > 50) {
+      throw new Error('Неверный формат ввода');
+    }
+    this.#brand = brand;
+
+    if (typeof model !== 'string' || model.length < 1 || model.length > 50) {
+      throw new Error('Неверный формат ввода');
+    }
+    this.#model = model;
+
+    if (typeof yearOfManufacturing !== 'number' || yearOfManufacturing < 1900 || yearOfManufacturing > 2021) {
+      throw new Error('Неверный формат ввода');
+    }
+    this.#yearOfManufacturing = yearOfManufacturing;
+
+    if (typeof maxSpeed !== 'number' || maxSpeed < 100 || maxSpeed > 300) {
+      throw new Error('Неверный формат ввода');
+    }
+    this.#maxSpeed = maxSpeed;
+
+    if (typeof maxFuelVolume !== 'number' || maxFuelVolume < 5 || maxFuelVolume > 20) {
+      throw new Error('Неверный формат ввода');
+    }
+    this.#maxFuelVolume = maxFuelVolume;
+
+    if (typeof fuelConsumption !== 'number') {
+      throw new Error('Неверный формат ввода');
+    }
+    this.#fuelConsumption = fuelConsumption;
+  }
 
   set brand(brand) {
     if (typeof brand !== 'string' || brand.length < 1 || brand.length > 50) {
@@ -104,9 +134,7 @@ class Car {
   }
 
   fillUpGasTank(fuelVolume) {
-    if (!this.#maxFuelVolume) {
-      throw new Error('Не задан объём топливного бака');
-    } else if (typeof fuelVolume !== 'number' || this.#maxFuelVolume <= 0) {
+    if (typeof fuelVolume !== 'number' || this.#maxFuelVolume <= 0) {
       throw new Error('Неверное количество топлива для заправки');
     } else if (this.#currentFuelVolume + fuelVolume > this.#maxFuelVolume) {
       throw new Error('Топливный бак переполнен');
@@ -117,10 +145,6 @@ class Car {
   drive(speed, hours) {
     if (!this.#isStarted) {
       throw new Error('Машина должна быть заведена, чтобы ехать');
-    } else if (!this.#fuelConsumption) {
-      throw new Error('Не задано потребление топлива');
-    } else if (!this.#maxSpeed) {
-      throw new Error('Не задана максимальная скорость');
     } else if (typeof speed !== 'number' || speed <= 0) {
       throw new Error('Неверная скорость');
     } else if (speed > this.#maxSpeed) {
